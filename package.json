@@ -1,0 +1,33 @@
+{
+  "name": "typestore",
+  "version": "0.0.0",
+  "description": "Database written in TypeScript",
+  "main": "build/index.js",
+  "scripts": {
+    "prestart": "./node_modules/.bin/tsc",
+    "start": "node ./build/server.js",
+    "pretest": "./node_modules/.bin/tsc",
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- ./build/tests/server.test.js",
+    "karma": "karma start karma.conf.js"
+  },
+  "keywords": [
+    "typescript",
+    "database"
+  ],
+  "author": "Daniele Manni",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
+    "request": "^2.74.0",
+    "tslint": "^3.15.1",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "winston": "^2.2.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "globalDependencies": {
+    "mocha": "registry:env/mocha#2.2.5+20160723033700",
+    "node": "registry:env/node#6.0.0+20160902022231",
+    "winston": "registry:dt/winston#0.0.0+20160417152829"
+  },
+  "dependencies": {
+    "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
+    "chai": "registry:npm/chai#3.5.0+20160723033700",
+    "express": "registry:npm/express#4.14.0+20160815112707",
+    "request": "registry:npm/request#2.69.0+20160428223725"
+  }
+}
