@@ -34,6 +34,19 @@ describe('Server running', function () {
             done();
         });
     });
+    it('Saving Object', function (done) {
+        var object = {
+            name: 'Daniele',
+            number: 10,
+            boolean: true
+        };
+        Request.post('http://localhost:40010/' + collectionName, object, function (err, res, body) {
+            should.not.exist(err, 'Error on index route');
+            assert.equal(res.statusCode, 201);
+            assert.deepEqual(JSON.parse(body), { message: 'Object created' });
+            done();
+        });
+    });
     it('Drop collection', function (done) {
         Request.del('http://localhost:40010/collections/' + collectionName, function (err, res, body) {
             should.not.exist(err, 'Erron on index route');

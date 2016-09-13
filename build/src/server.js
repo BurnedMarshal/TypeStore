@@ -4,7 +4,6 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var indexRoute = require('./routes/index');
 var collectionsRoute = require('./routes/collections');
-var objectRoute = require('./routes/objects');
 var Server = (function () {
     function Server() {
         var _this = this;
@@ -26,14 +25,14 @@ var Server = (function () {
         // create routes
         var index = new indexRoute.Index();
         var collections = new collectionsRoute.Collection();
-        var objects = new objectRoute.Object();
+        var objects = new collectionsRoute.Collection();
         router.get('/', index.index.bind(index.index));
         // router.post('/', index.save.bind(index.save));
         // Collections
         router.post('/collections/:name', collections.create.bind(collections.create));
         router.delete('/collections/:name', collections.drop.bind(collections.drop));
         // Objects
-        router.post('/:name', objects.create.bind(objects.create));
+        router.post('/collections/:name/', objects.create.bind(objects.create));
         this.app.use(router);
     };
     return Server;

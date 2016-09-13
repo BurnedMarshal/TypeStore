@@ -25,7 +25,7 @@ describe('Server running', () => {
     let collectionName: string = 'test';
 
     it('Create collection', function(done: MochaDone): void {
-        Request.post('http://localhost:40010/collections/' + collectionName,
+        Request.post('http://localhost:40010/collections/' + collectionName, 
         (err: any, res: IncomingMessage, body: string): void => {
             should.not.exist(err, 'Erron on index route');
             assert.equal(res.statusCode, 201);
@@ -40,6 +40,21 @@ describe('Server running', () => {
             should.not.exist(err, 'Error on index route');
             assert.equal(res.statusCode, 500);
             assert.deepEqual(JSON.parse(body), {message: 'ERROR 0002: collection alredy exist'});
+            done();
+        });
+    });
+
+    it('Saving Object', function(done: MochaDone): void {
+        let object = {
+            name: 'Daniele',
+            number: 10,
+            boolean: true
+        }
+        Request.post('http://localhost:40010/' + collectionName, object,
+        (err: any, res: IncomingMessage, body: string): void => {
+            should.not.exist(err, 'Error on index route');
+            assert.equal(res.statusCode, 201);
+            assert.deepEqual(JSON.parse(body), {message: 'Object created'});
             done();
         });
     });

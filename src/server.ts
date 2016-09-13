@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as indexRoute from './routes/index';
 import * as collectionsRoute from './routes/collections';
+import * as objectRoute from './routes/objects';
 
 class Server {
 
@@ -32,6 +33,7 @@ class Server {
         // create routes
         let index: indexRoute.Index = new indexRoute.Index();
         let collections: collectionsRoute.Collection = new collectionsRoute.Collection();
+        let objects: objectRoute.Object = new objectRoute.Object();
 
         router.get('/', index.index.bind(index.index));
         // router.post('/', index.save.bind(index.save));
@@ -39,6 +41,9 @@ class Server {
         // Collections
         router.post('/collections/:name', collections.create.bind(collections.create));
         router.delete('/collections/:name', collections.drop.bind(collections.drop));
+
+        // Objects
+        router.post('/:name', objects.create.bind(objects.create));
 
         this.app.use(router);
     }
