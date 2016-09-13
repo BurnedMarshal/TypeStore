@@ -3,6 +3,7 @@ var logger_1 = require('./logger');
 var bodyParser = require('body-parser');
 var express = require('express');
 var indexRoute = require('./routes/index');
+var collectionsRoute = require('./routes/collections');
 var Server = (function () {
     function Server() {
         var _this = this;
@@ -18,12 +19,17 @@ var Server = (function () {
         return new Server();
     };
     Server.prototype.routes = function () {
-        //get router
+        // get router
         var router;
         router = express.Router();
-        //create routes
+        // create routes
         var index = new indexRoute.Index();
-        router.get("/", index.index.bind(index.index));
+        var collections = new collectionsRoute.Collection();
+        router.get('/', index.index.bind(index.index));
+        // router.post('/', index.save.bind(index.save));
+        // Collections
+        router.post('/collections/:name', collections.create.bind(collections.create));
+        router.delete('/collections/:name', collections.drop.bind(collections.drop));
         this.app.use(router);
     };
     return Server;

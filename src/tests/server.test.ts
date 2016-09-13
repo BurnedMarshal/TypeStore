@@ -21,4 +21,46 @@ describe('Server running', () => {
             done();
         });
     });
+
+    let collectionName: string = 'test';
+
+    it('Create collection', function(done: MochaDone): void {
+        Request.post('http://localhost:40010/collections/' + collectionName,
+        (err: any, res: IncomingMessage, body: string): void => {
+            should.not.exist(err, 'Erron on index route');
+            assert.equal(res.statusCode, 201);
+            assert.deepEqual(JSON.parse(body), {message: `Collection ${collectionName} created`});
+            done();
+        });
+    });
+
+    it('Collection alredy exist', function(done: MochaDone): void {
+        Request.post('http://localhost:40010/collections/' + collectionName,
+        (err: any, res: IncomingMessage, body: string): void => {
+            should.not.exist(err, 'Error on index route');
+            assert.equal(res.statusCode, 500);
+            assert.deepEqual(JSON.parse(body), {message: 'ERROR 0002: collection alredy exist'});
+            done();
+        });
+    });
+
+    it('Drop collection', function(done: MochaDone): void {
+        Request.del('http://localhost:40010/collections/' + collectionName,
+        (err: any, res: IncomingMessage, body: string): void => {
+            should.not.exist(err, 'Erron on index route');
+            assert.equal(res.statusCode, 200);
+            assert.deepEqual(JSON.parse(body), {message: `Collection ${collectionName} deleted`});
+            done();
+        });
+    });
+
+    it('Drop not existing collection', function(done: MochaDone): void {
+        Request.del('http://localhost:40010/collections/' + collectionName,
+        (err: any, res: IncomingMessage, body: string): void => {
+            should.not.exist(err, 'Erron on index route');
+            assert.equal(res.statusCode, 500);
+            assert.deepEqual(JSON.parse(body), {message: `ERROR 0003: collection missing`});
+            done();
+        });
+    });
 });

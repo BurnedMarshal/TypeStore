@@ -2,6 +2,7 @@ import Logger from './logger';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as indexRoute from './routes/index';
+import * as collectionsRoute from './routes/collections';
 
 class Server {
 
@@ -30,9 +31,14 @@ class Server {
 
         // create routes
         let index: indexRoute.Index = new indexRoute.Index();
+        let collections: collectionsRoute.Collection = new collectionsRoute.Collection();
 
         router.get('/', index.index.bind(index.index));
-        router.post('/', index.save.bind(index.save));
+        // router.post('/', index.save.bind(index.save));
+
+        // Collections
+        router.post('/collections/:name', collections.create.bind(collections.create));
+        router.delete('/collections/:name', collections.drop.bind(collections.drop));
 
         this.app.use(router);
     }

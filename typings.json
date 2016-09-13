@@ -1,13 +1,17 @@
 {
   "globalDependencies": {
-    "mocha": "registry:env/mocha#2.2.5+20160723033700",
-    "node": "registry:env/node#6.0.0+20160902022231",
+    "body-parser": "registry:dt/body-parser#0.0.0+20160619023215",
+    "bson": "registry:dt/bson#0.4.21+20160317120654",
+    "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "express": "registry:dt/express#4.0.0+20160708185218",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20160829034835",
+    "form-data": "registry:dt/form-data#0.0.0+20160724024111",
+    "mime": "registry:dt/mime#0.0.0+20160316155526",
+    "mocha": "registry:dt/mocha#2.2.5+20160720003353",
+    "node": "registry:dt/node#6.0.0+20160909174046",
+    "request": "registry:dt/request#0.0.0+20160726020908",
+    "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
     "winston": "registry:dt/winston#0.0.0+20160417152829"
   },
-  "dependencies": {
-    "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
-    "chai": "registry:npm/chai#3.5.0+20160723033700",
-    "express": "registry:npm/express#4.14.0+20160815112707",
-    "request": "registry:npm/request#2.69.0+20160428223725"
-  }
+  "dependencies": {}
 }

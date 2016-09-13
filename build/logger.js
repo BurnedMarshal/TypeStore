@@ -1,5 +1,5 @@
 "use strict";
-var winston = require("winston");
+var winston = require('winston');
 var logger = new (winston.Logger)({
     exceptionHandlers: [new (winston.transports.Console)({ json: false, timestamp: true })],
     exitOnError: false,
