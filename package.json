@@ -9,6 +9,7 @@
     "pretest": "./node_modules/.bin/tsc",
     "remap-istanbul": "./node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/coverage-final.json -t json",
     "clean": "rm -fr ./coverage 2> /dev/null",
+    "postremap-istanbul": "rm -r ./coverage/lcov-report && rm ./coverage/lcov.info && rm ./coverage/coverage.json",
     "test": "npm run clean && ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- ./build/tests/server.test.js && npm run remap-istanbul",
     "karma": "karma start karma.conf.js"
   },
