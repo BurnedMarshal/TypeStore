@@ -10,10 +10,10 @@ var Object = (function () {
         console.log(object);
         var newBson = {};
         for (var prop in object) {
-            if (typeof prop === 'boolean' || typeof prop === 'string') {
+            if (typeof object[prop] === 'boolean' || typeof object[prop] === 'string') {
                 newBson[prop] = object[prop];
             }
-            else if (typeof prop === 'number') {
+            else if (typeof object[prop] === 'number') {
                 newBson[prop] = bson.BSONPure.Long.fromNumber(object[prop]);
             }
         }
@@ -33,6 +33,26 @@ var Object = (function () {
                         return res.status(500).json({ message: 'ERROR 0004: Error saving object' });
                     }
                     return res.status(201).json({ message: 'Object created' });
+                });
+            });
+        }
+        else {
+            // TODO: Append data to file.
+            var jsonData = void 0;
+            var index_1;
+            fs.readFile(indexFilePath, function (err, data) {
+                console.log("json data: ", data.toString());
+                index_1 = JSON.parse(data.toString());
+                index_1[object.$id] = { size: bsonBuffer.byteLength, start: index_1['0'].size, end: bsonBuffer.byteLength + index_1['0'].size };
+                index_1['0'] = { size: bsonBuffer.byteLength + index_1['0'].size };
+                fs.writeFile(indexFilePath, JSON.stringify(index_1));
+                fs.open(collectionFilePath, 'a+', function (err, fd) {
+                    fs.write(fd, bsonBuffer, 0, bsonBuffer.byteLength, index_1['0'].size - bsonBuffer.byteLength, function (err) {
+                        if (err) {
+                            return res.status(500).json({ message: 'ERROR 0004: Error saving object' });
+                        }
+                        return res.status(201).json({ message: 'Object created' });
+                    });
                 });
             });
         }
