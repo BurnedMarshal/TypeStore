@@ -1,43 +1,52 @@
 "use strict";
-var logger_1 = require('./logger');
-var bodyParser = require('body-parser');
-var express = require('express');
-var indexRoute = require('./routes/index');
-var collectionsRoute = require('./routes/collections');
-var objectRoute = require('./routes/objects');
-var Server = (function () {
-    function Server() {
-        var _this = this;
-        this.PORT = 40010;
-        this.app = express();
-        this.app.use(bodyParser.json());
-        this.routes();
-        this.app.listen(this.PORT, function () {
-            logger_1.default.info('TypeData running on port ', _this.PORT);
-        });
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var http = __importStar(require("http"));
+var App_1 = __importDefault(require("./App"));
+var port = normalizePort(process.env.PORT || 3000);
+App_1.default.set('port', port);
+var server = http.createServer(App_1.default);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+function normalizePort(val) {
+    var port = (typeof val === 'string') ? parseInt(val, 10) : val;
+    if (isNaN(port))
+        return val;
+    else if (port >= 0)
+        return port;
+    else
+        return false;
+}
+function onError(error) {
+    if (error.syscall !== 'listen')
+        throw error;
+    var bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
     }
-    Server.bootstrap = function () {
-        return new Server();
-    };
-    Server.prototype.routes = function () {
-        // get router
-        var router;
-        router = express.Router();
-        // create routes
-        var index = new indexRoute.Index();
-        var collections = new collectionsRoute.Collection();
-        var objects = new objectRoute.Object();
-        router.get('/', index.index.bind(index.index));
-        // router.post('/', index.save.bind(index.save));
-        // Collections
-        router.post('/collections/:name', collections.create.bind(collections.create));
-        router.delete('/collections/:name', collections.drop.bind(collections.drop));
-        // Objects
-        router.post('/:name', objects.create.bind(objects.create));
-        this.app.use(router);
-    };
-    return Server;
-}());
-var typeStore = Server.bootstrap();
-module.exports = typeStore;
+}
+function onListening() {
+    var addr = server.address();
+    var bind = (typeof addr === 'string') ? "pipe " + addr : "port " + addr.port;
+    console.log("Listening on " + bind);
+}
 //# sourceMappingURL=server.js.map

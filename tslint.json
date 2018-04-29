@@ -1,9 +1,0 @@
-{
-  "extends": "tslint:recommended",
-  "rules": {
-    "no-constructor-vars": true,
-    "quotemark": [true, "single", "avoid-escape"]
-  },
-  "rulesDirectory": [
-  ]
-}

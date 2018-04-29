@@ -1,5 +1,6 @@
 "use strict";
-var Index = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+var Index = /** @class */ (function () {
     function Index() {
     }
     Index.prototype.index = function (req, res, next) {

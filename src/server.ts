@@ -1,54 +1,41 @@
-import Logger from './logger';
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
-import * as indexRoute from './routes/index';
-import * as collectionsRoute from './routes/collections';
-import * as objectRoute from './routes/objects';
+import * as http from 'http';
 
-class Server {
+import App from './App';
 
-    public static bootstrap(): Server {
-        return new Server();
-    }
+const port = normalizePort(process.env.PORT || 3000);
+App.set('port', port);
 
-    public PORT: number = 40010;
-    public app: express.Application;
+const server = http.createServer(App);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
-    constructor() {
-        this.app = express();
-        this.app.use(bodyParser.json());
-
-        this.routes();
-
-        this.app.listen(this.PORT, () => {
-            Logger.info('TypeData running on port ', this.PORT);
-        });
-    }
-
-    private routes(): void {
-        // get router
-        let router: express.Router;
-        router = express.Router();
-
-        // create routes
-        let index: indexRoute.Index = new indexRoute.Index();
-        let collections: collectionsRoute.Collection = new collectionsRoute.Collection();
-        let objects: objectRoute.Object = new objectRoute.Object();
-
-        router.get('/', index.index.bind(index.index));
-        // router.post('/', index.save.bind(index.save));
-
-        // Collections
-        router.post('/collections/:name', collections.create.bind(collections.create));
-        router.delete('/collections/:name', collections.drop.bind(collections.drop));
-
-        // Objects
-        router.post('/:name', objects.create.bind(objects.create));
-
-        this.app.use(router);
-    }
+function normalizePort(val: number|string): number|string|boolean {
+  let port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
+  if (isNaN(port)) return val;
+  else if (port >= 0) return port;
+  else return false;
 }
 
-let typeStore = Server.bootstrap();
+function onError(error: NodeJS.ErrnoException): void {
+  if (error.syscall !== 'listen') throw error;
+  let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+  switch(error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
 
-export = typeStore;
+function onListening(): void {
+  let addr = server.address();
+  let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
+  console.log(`Listening on ${bind}`);
+}
