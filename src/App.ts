@@ -2,9 +2,9 @@ import * as path from 'path';
 import express from "express";
 import * as bodyParser from 'body-parser';
 
-import { Collection } from './routes/collections';
-import { Index } from './routes';
-import { ObjectDocument } from './routes/objects';
+import { CollectionRouter } from './routes/collections';
+import { IndexRouter } from './routes';
+import * as logger from './logger';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -33,15 +33,11 @@ class App {
      * API endpoints */
     let router = express.Router();
 
-    const collectionRoutes: Collection = new Collection();
-    const indexRoutes: Index = new Index();
-    const objectRoutes: ObjectDocument = new ObjectDocument();
+    const collectionRoutes: CollectionRouter = new CollectionRouter();
+    const indexRoutes: IndexRouter = new IndexRouter();
 
-    router.get('/', indexRoutes.index.bind(indexRoutes.index));
-    router.post('/collections/:name', collectionRoutes.create.bind(collectionRoutes.create));
-    router.delete('/collections/:name', collectionRoutes.drop.bind(collectionRoutes.drop));
-    router.post('/:name', objectRoutes.create.bind(objectRoutes.create));
-    router.get('/:name/:id', objectRoutes.read.bind(objectRoutes.read));
+    router.use('/', indexRoutes.router);
+    router.use('/collections/', collectionRoutes.router);
     // placeholder route handler
     this.express.use('/', router);
   }

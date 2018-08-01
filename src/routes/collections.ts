@@ -1,7 +1,18 @@
 import * as express from 'express';
 import * as fs from 'fs';
+import { BasicRouter } from './basic';
 
-export class Collection {
+export class CollectionRouter extends BasicRouter {
+
+    constructor() {
+        super();
+        this.routeBinding();
+    }
+
+    private routeBinding() {
+        this.router.post('/:name', this.create);
+        this.router.delete('/:name', this.drop);
+    }
 
     public create(req: express.Request, res: express.Response, next: express.NextFunction) {
         let collectionPath = __dirname + '/../../data/' + req.params.name;

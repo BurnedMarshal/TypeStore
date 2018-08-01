@@ -34,48 +34,6 @@ describe('Server running', function () {
             done();
         });
     });
-    var savedObjects = [];
-    it('Saving Object', function (done) {
-        var object = {
-            name: 'Daniele',
-            value: 10,
-            boolean: true
-        };
-        chai.request(App_1.default).post('/' + collectionName).send(object).then(function (res) {
-            assert.equal(res.status, 201);
-            expect(res.body).have.property('$id');
-            var data = res.body;
-            if (data)
-                object['$id'] = data.$id;
-            expect(res.body).to.be.deep.equal(object);
-            savedObjects.push(object);
-            done();
-        });
-    });
-    it('Saving Object Append', function (done) {
-        var object = {
-            name: 'Daniele',
-            value: 12,
-            boolean: false
-        };
-        chai.request(App_1.default).post('/' + collectionName).send(object).then(function (res) {
-            assert.equal(res.status, 201);
-            expect(res.body).have.property('$id');
-            var data = res.body;
-            if (data)
-                object['$id'] = data.$id;
-            expect(res.body).to.be.deep.equal(object);
-            savedObjects.push(object);
-            done();
-        });
-    });
-    it('Read Object', function (done) {
-        chai.request(App_1.default).get('/' + collectionName + '/' + savedObjects[1].$id).then(function (res) {
-            assert.equal(res.status, 200);
-            expect(res.body).to.be.deep.equal(savedObjects[1]);
-            done();
-        });
-    });
     it('Drop collection', function (done) {
         chai.request(App_1.default).delete('/collections/' + collectionName).then(function (res) {
             assert.equal(res.status, 200);

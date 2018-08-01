@@ -14,7 +14,6 @@ var express_1 = __importDefault(require("express"));
 var bodyParser = __importStar(require("body-parser"));
 var collections_1 = require("./routes/collections");
 var routes_1 = require("./routes");
-var objects_1 = require("./routes/objects");
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
     //Run configuration methods on the Express instance.
@@ -35,14 +34,10 @@ var App = /** @class */ (function () {
          * working so far. This function will change when we start to add more
          * API endpoints */
         var router = express_1.default.Router();
-        var collectionRoutes = new collections_1.Collection();
-        var indexRoutes = new routes_1.Index();
-        var objectRoutes = new objects_1.ObjectDocument();
-        router.get('/', indexRoutes.index.bind(indexRoutes.index));
-        router.post('/collections/:name', collectionRoutes.create.bind(collectionRoutes.create));
-        router.delete('/collections/:name', collectionRoutes.drop.bind(collectionRoutes.drop));
-        router.post('/:name', objectRoutes.create.bind(objectRoutes.create));
-        router.get('/:name/:id', objectRoutes.read.bind(objectRoutes.read));
+        var collectionRoutes = new collections_1.CollectionRouter();
+        var indexRoutes = new routes_1.IndexRouter();
+        router.use('/', indexRoutes.router);
+        router.use('/collections/', collectionRoutes.router);
         // placeholder route handler
         this.express.use('/', router);
     };

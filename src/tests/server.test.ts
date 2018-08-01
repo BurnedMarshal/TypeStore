@@ -38,50 +38,6 @@ describe('Server running', () => {
         });
     });
 
-    let savedObjects: any = [];
-
-    it('Saving Object', function(done: MochaDone): void {
-        let object: any = {
-            name: 'Daniele',
-            value: 10,
-            boolean: true
-        }
-        chai.request(App).post('/' + collectionName).send(object).then((res: Response) => {
-            assert.equal(res.status, 201);
-            expect(res.body).have.property('$id');
-            const data: any = res.body;
-            if (data) object['$id'] = data.$id;
-            expect(res.body).to.be.deep.equal(object);
-            savedObjects.push(object);
-            done();
-        });
-    });
-
-    it('Saving Object Append', function(done: MochaDone): void {
-        let object: any = {
-            name: 'Daniele',
-            value: 12,
-            boolean: false
-        }
-        chai.request(App).post('/' + collectionName).send(object).then((res: Response) => {
-            assert.equal(res.status, 201);
-            expect(res.body).have.property('$id');
-            const data: any = res.body;
-            if (data) object['$id'] = data.$id;
-            expect(res.body).to.be.deep.equal(object);
-            savedObjects.push(object);
-            done();
-        });
-    });
-
-    it('Read Object', function(done: MochaDone): void {
-        chai.request(App).get('/' + collectionName + '/' + savedObjects[1].$id).then((res: Response) => {
-            assert.equal(res.status, 200);
-            expect(res.body).to.be.deep.equal(savedObjects[1]);
-            done();
-        });
-    });
-
     it('Drop collection', function(done: MochaDone): void {
         chai.request(App).delete('/collections/' + collectionName).then((res: Response) => {
             assert.equal(res.status, 200);
