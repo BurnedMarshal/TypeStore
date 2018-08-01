@@ -4,7 +4,6 @@ import * as bodyParser from 'body-parser';
 
 import { CollectionRouter } from './routes/collections';
 import { IndexRouter } from './routes';
-import * as logger from './logger';
 
 // Creates and configures an ExpressJS web server.
 class App {

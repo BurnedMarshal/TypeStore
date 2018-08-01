@@ -7,12 +7,12 @@
     "build": "rm -rf ./build && ./node_modules/.bin/tsc",
     "prestart": "npm run build",
     "start": "node ./build/server.js",
-    "pretest": "npm run build",
+    "pretest": "npm run build && docker build -t typestore -f Dockerfile .",
     "remap-istanbul": "./node_modules/.bin/remap-istanbul -i coverage/coverage.json -o coverage/coverage-final.json -t json",
     "clean": "rm -fr ./coverage 2> /dev/null",
     "postremap-istanbul": "rm -r ./coverage/lcov-report && rm ./coverage/lcov.info && rm ./coverage/coverage.json",
-    "test": "npm run clean && ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- ./build/tests/server.test.js && npm run remap-istanbul",
-    "karma": "karma start karma.conf.js"
+    "test": "docker run --rm typestore",
+    "docker-test": "npm run clean && ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- ./build/tests/server.test.js && npm run remap-istanbul"
   },
   "keywords": [
     "typescript",
@@ -39,7 +39,6 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "bson": "^2.0.6",
-    "express": "^4.14.0",
-    "winston": "^2.2.0"
+    "express": "^4.14.0"
   }
 }
